@@ -44,8 +44,8 @@ do
     fi
     echo $baseName
     
-    baseNameRescue=$baseName_rescue
-    baseNameReadom=$baseName_readom
+    baseNameRescue="$baseName""_rescue"
+    baseNameReadom="$baseName""_readom"
     
     ## DDRESCUE BLOCK
     
