@@ -61,7 +61,7 @@ do
     imageSizeRescue="$(du -b $baseNameRescue.$suffix | cut -f 1)"
     
     # Results to log file
-    echo $baseNamebaseNameRescue,$diskSize,$imageSizeRescue,$checksumRescue,$ddrescueExitCode >> $logDdrescue
+    echo $baseNameRescue,$diskSize,$imageSizeRescue,$checksumRescue,$ddrescueExitCode >> $logDdrescue
 
     ## READOM BLOCK
         
@@ -79,7 +79,7 @@ do
     imageSizeReadom="$(du -b $baseNameReadom.$suffix | cut -f 1)"
     
     # Results to log file
-    echo $baseNamebaseNameReadom,$diskSize,$imageSizeReadom,$checksumReadom,$ReadomExitCode >> $logReadom
+    echo $baseNameReadom,$diskSize,$imageSizeReadom,$checksumReadom,$readomExitCode >> $logReadom
 
 done
 
