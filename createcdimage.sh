@@ -49,25 +49,26 @@ else
     baseName=$baseNameUser
 fi
 
-# Create disk image
-# ddrescue -d -n -b $sectorSize $deviceName $baseName.$suffix $baseName.log
-readom retries=$tries dev=$deviceName f=$baseName.$suffix
+# Construct command line
+# cdReadCommand="ddrescue -d -n -b $sectorSize $deviceName $baseName.$suffix $baseName.log"
+cdReadCommand="readom retries=$tries dev=$deviceName f=$baseName.$suffix"
+
+# Run command line
+$cdReadCommand
 
 # Exit code
-readomExitCode="$?"
+readExitCode="$?"
 
-if [ $readomExitCode = 0 ] ; then
+if [ $readExitCode = 0 ] ; then
     exitOK=true
 else
     exitOK=false
     echo "Error: readom exited with error!" >&2
 fi
 
-# Exit code to file
-echo "readomExitCode="$readomExitCode > $baseName.readomExitcode.txt
-
 # Compute MD5 checksum on image, store to file
-md5sum $baseName.$suffix > $baseName.$suffix."md5"
+checksum=$(md5sum $baseName.$suffix)
+echo $checksum > $baseName.$suffix."md5"
 
 # Size of image
 imageSize="$(du -b $baseName.$suffix | cut -f 1)"
@@ -80,6 +81,17 @@ else
     echo "Error: image size does not equal size of source medium!" >&2
 fi
 
-# Result of size check to file
-echo "passedSizeCheck="$passedSizeCheck > $baseName.sizecheck.txt
+# Write log file (JSON format)
+
+logFile="$baseName".json
+
+echo "{" > $logFile
+echo \""fileName"\": \"$baseName.$suffix\", >> $logFile
+echo \""readCommand"\": \"$cdReadCommand\", >> $logFile
+echo \""readExitCode"\": $readExitCode, >> $logFile
+echo \""passedSizeCheck"\": $passedSizeCheck, >> $logFile
+echo \""messageDigestAlgorithm"\": \""MD5"\", >> $logFile
+echo \""messageDigest"\": \"$(echo $checksum | cut -d ' ' -f 1)\" >> $logFile
+echo "}" >> $logFile
+
 
