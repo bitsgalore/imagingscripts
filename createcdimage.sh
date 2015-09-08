@@ -1,15 +1,14 @@
 #!/bin/sh
 
 ## Create disk image from CD/DVD-ROM using ddrescue
-## Store image file, ddrescue log and md5 checksum
+## or readom
+##
+## Store image file, log and md5 checksum
 ##
 ## Johan van der Knijff, September 2015
 ##
-## NOTE: if you get this message:
 ##
-##    ddrescue: Can't open input file: Permission denied
-##
-## Then try to execute the script as root (sudo).
+## Execute script as root (sudo)!
 
 # Check command line args
 
@@ -28,6 +27,7 @@ baseNameUser="$2"
 # General settings
 sectorSize="2048"
 suffix="iso"
+tries="4"
 
 # Unmount disk (probably not really needed, but just making sure)
 umount $deviceName
@@ -50,7 +50,21 @@ else
 fi
 
 # Create disk image
-ddrescue -d -n -b $sectorSize $deviceName $baseName.$suffix $baseName.log
+# ddrescue -d -n -b $sectorSize $deviceName $baseName.$suffix $baseName.log
+readom retries=$tries dev=$deviceName f=$baseName.$suffix
+
+# Exit code
+readomExitCode="$?"
+
+if [ $readomExitCode = 0 ] ; then
+    exitOK=true
+else
+    exitOK=false
+    echo "Error: readom exited with error!" >&2
+fi
+
+# Exit code to file
+echo "readomExitCode="$readomExitCode > $baseName.readomExitcode.txt
 
 # Compute MD5 checksum on image, store to file
 md5sum $baseName.$suffix > $baseName.$suffix."md5"

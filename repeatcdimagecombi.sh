@@ -25,7 +25,7 @@ logReadom="repeatreadom.log"
 echo "baseName","diskSize","imageSize","md5Sum","ddrescueExitCode" > $logDdrescue
 echo "baseName","diskSize","imageSize","md5Sum","readomExitCode" > $logReadom
 
-for i in {1..3}; 
+for i in {1..100}; 
 do
     echo $i
     # Unmount disk (probably not really needed, but just making sure)
