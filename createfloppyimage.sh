@@ -60,20 +60,20 @@ else
 fi
 
 # Verify integrity of DOS filesystem with dosfsck
-integrityCheckCommand="echo 'n' | dosfsck -t -r $baseName.$suffix > $baseName.fsc"
+#integrityCheckCommand="echo 'n' | dosfsck -t -r $baseName.$suffix > $baseName.fsc"
 # echo $integrityCheckCommand
 $integrityCheckCommand
 
 # Exit code
 # NOTE: even if errors were found, exit code is zero!
-integrityCheckExitCode="$?"
+#integrityCheckExitCode="$?"
 
-if [ $integrityCheckExitCode = 0 ] ; then
-    exitOK=true
-else
-    exitOK=false
-    echo "Error: integrity check exited with error!" >&2
-fi
+#if [ $integrityCheckExitCode = 0 ] ; then
+#    exitOK=true
+#else
+#    exitOK=false
+#    echo "Error: integrity check exited with error!" >&2
+#fi
 
 # Write log file (JSON format)
 
@@ -84,9 +84,11 @@ echo \""fileName"\": \"$baseName.$suffix\", >> $logFile
 echo \""readCommand"\": \"$floppyReadCommand\", >> $logFile
 echo \""readExitCode"\": $readExitCode, >> $logFile
 echo \""ddrescueLog"\": \"$baseName.log\", >> $logFile
-echo \""integrityCheckCommand"\": \"$integrityCheckCommand\", >> $logFile
-echo \""integrityCheckExitCode"\": $integrityCheckExitCode, >> $logFile
-echo \""integrityCheckResult"\": \"$baseName.fsc\", >> $logFile
+#echo \""integrityCheckCommand"\": \"$integrityCheckCommand\", >> $logFile
+#echo \""integrityCheckExitCode"\": $integrityCheckExitCode, >> $logFile
+#echo \""integrityCheckResult"\": \"$baseName.fsc\", >> $logFile
+echo \""diskSize"\": $diskSize, >> $logFile
+echo \""imageSize"\": $imageSize, >> $logFile
 echo \""passedSizeCheck"\": $passedSizeCheck, >> $logFile
 echo \""messageDigestAlgorithm"\": \""MD5"\", >> $logFile
 echo \""messageDigest"\": \"$(echo $checksum | cut -d ' ' -f 1)\" >> $logFile

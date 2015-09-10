@@ -89,6 +89,8 @@ echo "{" > $logFile
 echo \""fileName"\": \"$baseName.$suffix\", >> $logFile
 echo \""readCommand"\": \"$cdReadCommand\", >> $logFile
 echo \""readExitCode"\": $readExitCode, >> $logFile
+echo \""diskSize"\": $diskSize, >> $logFile
+echo \""imageSize"\": $imageSize, >> $logFile
 echo \""passedSizeCheck"\": $passedSizeCheck, >> $logFile
 echo \""messageDigestAlgorithm"\": \""MD5"\", >> $logFile
 echo \""messageDigest"\": \"$(echo $checksum | cut -d ' ' -f 1)\" >> $logFile
