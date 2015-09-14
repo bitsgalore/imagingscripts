@@ -15,7 +15,7 @@
 if [ "$#" -ne 2 ] ; then
   echo "Usage: createimage deviceName baseName" >&2
   echo "" >&2
-  echo "    baseName: for cdrom use -auto to generate baseName from disc label" >&2
+  #echo "    baseName: for cdrom use -auto to generate baseName from disc label" >&2
   echo "" >&2
   exit 1
 fi
@@ -32,22 +32,27 @@ tries="4"
 # Unmount disk (probably not really needed, but just making sure)
 umount $deviceName
 
+# Disabled below lines because goes wrong if label contains spaces!
+
 # From disk extract label name and disk size (in bytes)
-labelSizeString=$(lsblk $deviceName -n -i -b -o LABEL,SIZE)
-label="$(echo $labelSizeString | cut -d ' ' -f 1)"
-diskSize="$(echo $labelSizeString | cut -d ' ' -f 2)"
+#labelSizeString=$(lsblk $deviceName -n -i -b -o LABEL,SIZE)
+#label="$(echo $labelSizeString | cut -d ' ' -f 1)"
+#diskSize="$(echo $labelSizeString | cut -d ' ' -f 2)"
 
 # Basename: user-defined value or automatic from disk label
-if [ $baseNameUser = "-auto" ] ; then
-    baseName=$label
-    # Exit if label is empty string
-    if [ -v "$label" ] ; then
-        echo "Error: empty disk label, cannot use -auto!" >&2
-        exit 1
-    fi
-else
-    baseName=$baseNameUser
-fi
+#if [ $baseNameUser = "-auto" ] ; then
+#    baseName=$label
+#    # Exit if label is empty string
+#    if [ -v "$label" ] ; then
+#        echo "Error: empty disk label, cannot use -auto!" >&2
+#        exit 1
+#    fi
+#else
+#    baseName=$baseNameUser
+#fi
+
+diskSize=$(lsblk $deviceName -n -i -b -o SIZE)
+baseName=$baseNameUser
 
 # Construct command line
 # cdReadCommand="ddrescue -d -n -b $sectorSize $deviceName $baseName.$suffix $baseName.log"
@@ -95,5 +100,4 @@ echo \""passedSizeCheck"\": $passedSizeCheck, >> $logFile
 echo \""messageDigestAlgorithm"\": \""MD5"\", >> $logFile
 echo \""messageDigest"\": \"$(echo $checksum | cut -d ' ' -f 1)\" >> $logFile
 echo "}" >> $logFile
-
 
