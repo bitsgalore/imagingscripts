@@ -51,7 +51,6 @@ umount $deviceName
 #    baseName=$baseNameUser
 #fi
 
-diskSize=$(lsblk $deviceName -n -i -b -o SIZE)
 baseName=$baseNameUser
 
 # Construct command line
@@ -74,6 +73,8 @@ fi
 # Compute MD5 checksum on image, store to file
 checksum=$(md5sum $baseName.$suffix)
 echo $checksum > $baseName.$suffix."md5"
+
+diskSize=$(lsblk $deviceName -n -i -b -o SIZE)
 
 # Size of image
 imageSize="$(du -b $baseName.$suffix | cut -f 1)"
