@@ -102,3 +102,8 @@ echo \""messageDigestAlgorithm"\": \""MD5"\", >> $logFile
 echo \""messageDigest"\": \"$(echo $checksum | cut -d ' ' -f 1)\" >> $logFile
 echo "}" >> $logFile
 
+# Fix access permissions
+
+chmod 777 $baseName.$suffix
+chmod 777 $baseName.json
+chmod 777  $baseName.$suffix."md5"
